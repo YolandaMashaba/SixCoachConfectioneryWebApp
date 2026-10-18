@@ -22,8 +22,8 @@ const PRODUCTS = [
     badge: 'BESTSELLER',
     rating: 4.9,
     reviews: 28,
-    image: 'src/images/cake-1.jpeg',
-    description: 'Freshly piped buttercream roses atop delicious layered cake sponges.'
+    image: '/images/cake-1.jpeg',
+    description: 'Freshly baked assorted muffins'
   },
   {
     id: 'c2',
@@ -33,7 +33,7 @@ const PRODUCTS = [
     badge: 'POPULAR',
     rating: 4.8,
     reviews: 19,
-    image: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-2.jpeg',
     description: 'Delicate floral buttercream petals on smooth pastel frosting.'
   },
   {
@@ -44,7 +44,7 @@ const PRODUCTS = [
     badge: 'NEW',
     rating: 4.7,
     reviews: 14,
-    image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-3.jpeg',
     description: 'Fun retro polka dots with custom chocolate ganache finish.'
   },
   {
@@ -55,7 +55,7 @@ const PRODUCTS = [
     badge: 'BESTSELLER',
     rating: 5.0,
     reviews: 42,
-    image: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-4.jpeg',
     description: 'Rich multi-layered sponge cake with whipped vanilla buttercream.'
   },
   {
@@ -66,7 +66,7 @@ const PRODUCTS = [
     badge: null,
     rating: 4.9,
     reviews: 31,
-    image: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-5.jpeg',
     description: 'Hand-crafted floral art decorating soft gourmet sponges.'
   },
   {
