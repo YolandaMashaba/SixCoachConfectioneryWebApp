@@ -16,9 +16,9 @@ import {
 const PRODUCTS = [
   {
     id: 'c1',
-    name: 'Rose Garden Cake',
+    name: 'Assorted Muffins',
     category: 'Cakes',
-    price: 420,
+    price: 200,
     badge: 'BESTSELLER',
     rating: 4.9,
     reviews: 28,
@@ -27,31 +27,31 @@ const PRODUCTS = [
   },
   {
     id: 'c2',
-    name: 'Pretty Petals Cake',
+    name: 'Butter Biscuits',
     category: 'Cakes',
-    price: 420,
+    price: 320,
     badge: 'POPULAR',
     rating: 4.8,
     reviews: 19,
     image: '/images/cake-2.jpeg',
-    description: 'Delicate floral buttercream petals on smooth pastel frosting.'
+    description: '"Melting moment" crispy biscuits.'
   },
   {
     id: 'c3',
-    name: 'Polka Dot Cake',
+    name: 'Banana Loaf',
     category: 'Cakes',
-    price: 420,
+    price: 100,
     badge: 'NEW',
     rating: 4.7,
     reviews: 14,
     image: '/images/cake-3.jpeg',
-    description: 'Fun retro polka dots with custom chocolate ganache finish.'
+    description: 'Freshly baked banana loaf.'
   },
   {
     id: 'c4',
-    name: 'Signature Layer Cake',
+    name: '',
     category: 'Cakes',
-    price: 420,
+    price: 300,
     badge: 'BESTSELLER',
     rating: 5.0,
     reviews: 42,
@@ -60,92 +60,38 @@ const PRODUCTS = [
   },
   {
     id: 'c5',
-    name: 'Floral Buttercream Cake',
+    name: 'Marble Cake',
     category: 'Cakes',
-    price: 480,
+    price: 100,
     badge: null,
     rating: 4.9,
     reviews: 31,
     image: '/images/cake-5.jpeg',
-    description: 'Hand-crafted floral art decorating soft gourmet sponges.'
+    description: 'Freshly baked marble cake.'
   },
   {
     id: 'c6',
-    name: 'Chocolate Ganache Cake',
+    name: 'Ginger Biscuits',
     category: 'Cakes',
-    price: 450,
+    price: 250,
     badge: 'CUSTOM',
     rating: 4.8,
     reviews: 22,
     image: '/images/cake-6.jpeg',
-    description: 'Decadent Belgian chocolate drip and ganache filling.'
+    description: 'Cruncy and delicious ginger biscuits.'
   },
   {
     id: 'c7',
-    name: 'Confetti Celebration Cake',
+    name: 'Sponge Cake',
     category: 'Cakes',
-    price: 420,
+    price: 300,
     badge: null,
     rating: 4.6,
     reviews: 18,
     image: '/images/cake-7.jpeg',
-    description: 'Festive funfetti cake layers with white chocolate frosting.'
-  },
-  {
-    id: 'c8',
-    name: 'Naked Rustic Cake',
-    category: 'Cakes',
-    price: 390,
-    badge: null,
-    rating: 4.9,
-    reviews: 15,
-    image: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?auto=format&fit=crop&w=600&q=80',
-    description: 'Rustic exposed layers with fresh seasonal berry toppings.'
-  },
-  {
-    id: 'c9',
-    name: 'Tiered Wedding Cake',
-    category: 'Cakes',
-    price: 1200,
-    badge: 'CUSTOM',
-    rating: 5.0,
-    reviews: 11,
-    image: 'https://images.unsplash.com/photo-1525257831700-18389ad16575?auto=format&fit=crop&w=600&q=80',
-    description: 'Elegant multi-tier wedding centerpiece customized to order.'
-  },
-  {
-    id: 'cp1',
-    name: 'Assorted Gourmet Cupcakes (12pk)',
-    category: 'Cupcakes',
-    price: 320,
-    badge: 'BESTSELLER',
-    rating: 4.9,
-    reviews: 55,
-    image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=600&q=80',
-    description: 'A box of 12 signature cupcakes with various gourmet toppings.'
-  },
-  {
-    id: 'm1',
-    name: 'French Macaron Gift Box (10pk)',
-    category: 'Macarons',
-    price: 260,
-    badge: 'NEW',
-    rating: 4.8,
-    reviews: 24,
-    image: 'https://images.unsplash.com/photo-1569864358642-9d1684040f43?auto=format&fit=crop&w=600&q=80',
-    description: 'Delicate almond meringue shells filled with luxurious ganache.'
-  },
-  {
-    id: 't1',
-    name: 'Butter Shortbread Tin',
-    category: 'Treats',
-    price: 180,
-    badge: null,
-    rating: 4.7,
-    reviews: 40,
-    image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80',
-    description: 'Traditional home-baked butter shortbread biscuits in a signature tin.'
+    description: 'Soft and delicate, yet satisfying.'
   }
+
 ];
 
 const CATEGORIES = [
@@ -376,7 +322,7 @@ export default function App() {
           <div className="relative flex justify-center items-center">
             <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-xl border-4 border-white transform rotate-2">
               <img 
-                src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80" 
+                src="/images/cake-8.jpeg" 
                 alt="Signature Cake"
                 className="w-full h-full object-cover"
               />
@@ -672,8 +618,8 @@ export default function App() {
           </div>
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">Contact & Orders</h4>
-            <p className="text-xs text-[#A89F95]">WhatsApp: +27 82 123 4567</p>
-            <p className="text-xs text-[#A89F95] mt-1">Email: orders@sixcoachconfectionery.co.za</p>
+            <p className="text-xs text-[#A89F95]">WhatsApp: +27 79 190 1471</p>
+            <p className="text-xs text-[#A89F95] mt-1">Email: zwanefistos88@gmail.co.za</p>
           </div>
         </div>
         <div className="border-t border-[#403D3B] py-4 text-center text-[11px] text-[#8C827A]">
