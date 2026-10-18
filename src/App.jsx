@@ -9,7 +9,11 @@ import {
   Minus, 
   Sparkles,
   ArrowRight,
-  Filter
+  Filter,
+  Heart,
+  Award,
+  Users,
+  Coffee
 } from 'lucide-react';
 
 // Product Catalog Data matching wireframes & UI designs
@@ -49,7 +53,7 @@ const PRODUCTS = [
   },
   {
     id: 'c4',
-    name: '',
+    name: 'Layered Celebration Cake',
     category: 'Cakes',
     price: 300,
     badge: 'BESTSELLER',
@@ -78,7 +82,7 @@ const PRODUCTS = [
     rating: 4.8,
     reviews: 22,
     image: '/images/cake-6.jpeg',
-    description: 'Cruncy and delicious ginger biscuits.'
+    description: 'Crunchy and delicious ginger biscuits.'
   },
   {
     id: 'c7',
@@ -91,18 +95,11 @@ const PRODUCTS = [
     image: '/images/cake-7.jpeg',
     description: 'Soft and delicate, yet satisfying.'
   }
-
 ];
 
-const CATEGORIES = [
+const NAV_ITEMS = [
   'All Products',
-  'Cakes',
-  'Cupcakes',
-  'Macarons',
-  'Toppers',
-  'Treats',
-  'Corporate Orders',
-  'Merchandise'
+  'About Us'
 ];
 
 const CAKE_SIZE_PRICING = {
@@ -120,7 +117,7 @@ const getProductPrice = (product, customOpts = null) => {
 };
 
 export default function App() {
-  const [selectedCategory, setSelectedCategory] = useState('Cakes');
+  const [activeTab, setActiveTab] = useState('All Products');
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [cart, setCart] = useState([]);
@@ -135,17 +132,16 @@ export default function App() {
   // Filtering & Sorting
   const filteredProducts = useMemo(() => {
     return PRODUCTS.filter(product => {
-      const matchesCategory = selectedCategory === 'All Products' || product.category === selectedCategory;
       const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
                             product.description.toLowerCase().includes(searchQuery.toLowerCase());
-      return matchesCategory && matchesSearch;
+      return matchesSearch;
     }).sort((a, b) => {
       if (sortBy === 'price-low') return a.price - b.price;
       if (sortBy === 'price-high') return b.price - a.price;
       if (sortBy === 'rating') return b.rating - a.rating;
       return 0; // 'latest' default order
     });
-  }, [selectedCategory, searchQuery, sortBy]);
+  }, [searchQuery, sortBy]);
 
   // Cart operations
   const addToCart = (product, customOpts = null) => {
@@ -195,7 +191,7 @@ export default function App() {
   const handleWhatsAppOrder = () => {
     if (cart.length === 0) return;
     
-    let message = `Hello Six Coach Confectionery! \nI would like to place an order:\n\n`;
+    let message = `Hello Six Coach Confectionery! 🎂\nI would like to place an order:\n\n`;
     cart.forEach((item, index) => {
       message += `${index + 1}. *${item.name}* (x${item.quantity}) - R${item.price * item.quantity}.00\n`;
       if (item.customOpts) {
@@ -207,7 +203,7 @@ export default function App() {
     message += `\n*Total Amount:* R${totalCartAmount}.00\n\nPlease let me know availability and payment details!`;
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/27821234567?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/27791901471?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -220,22 +216,22 @@ export default function App() {
             
             {/* Logo */}
             <div 
-  className="flex items-center space-x-3 cursor-pointer" 
-  onClick={() => setSelectedCategory('All Products')}
->
-  <img 
-    src="/images/logo.jpeg" 
-    alt="Six Coach Confectionery Logo" 
-    className="h-14 w-14 object-contain rounded-full"
-  />
-</div>
+              className="flex items-center space-x-3 cursor-pointer" 
+              onClick={() => setActiveTab('All Products')}
+            >
+              <img 
+                src="/images/logo.jpeg" 
+                alt="Six Coach Confectionery Logo" 
+                className="h-14 w-14 object-contain rounded-full shadow-xs"
+              />
+            </div>
 
             {/* Search Bar */}
             <div className="flex-1 max-w-md mx-6">
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search treats, cakes, macarons..."
+                  placeholder="Search treats, cakes, muffins..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full bg-white border border-[#DDD5CA] rounded-full py-2 pl-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#B8860B] transition-all"
@@ -246,7 +242,7 @@ export default function App() {
 
             {/* Social & Cart Icons */}
             <div className="flex items-center space-x-4">
-              <a href="https://wa.me/27821234567" target="_blank" rel="noreferrer" className="text-[#2D2B2A] hover:text-[#25D366] transition-colors">
+              <a href="https://wa.me/27791901471" target="_blank" rel="noreferrer" className="text-[#2D2B2A] hover:text-[#25D366] transition-colors">
                 <MessageCircle className="w-5 h-5" />
               </a>
               <a href="#instagram" className="text-[#2D2B2A] hover:text-[#E1306C] transition-colors">
@@ -256,7 +252,7 @@ export default function App() {
                   <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
                 </svg>
               </a>
-              <a href="tel:+27821234567" className="text-[#2D2B2A] hover:text-[#B8860B] transition-colors">
+              <a href="tel:+27791901471" className="text-[#2D2B2A] hover:text-[#B8860B] transition-colors">
                 <Phone className="w-5 h-5" />
               </a>
 
@@ -275,161 +271,236 @@ export default function App() {
             </div>
           </div>
 
-          {/* Navigation Bar / Categories */}
-          <nav className="flex items-center space-x-1 sm:space-x-6 overflow-x-auto pb-3 pt-1 scrollbar-none text-sm font-medium border-t border-[#E2DAD0]/60">
-            {CATEGORIES.map((cat) => (
+          {/* Navigation Bar / Only All Products & About Us */}
+          <nav className="flex items-center space-x-6 overflow-x-auto pb-3 pt-1 text-sm font-medium border-t border-[#E2DAD0]/60">
+            {NAV_ITEMS.map((item) => (
               <button
-                key={cat}
-                onClick={() => setSelectedCategory(cat)}
-                className={`whitespace-nowrap px-3 py-1.5 rounded-full transition-all ${
-                  selectedCategory === cat 
+                key={item}
+                onClick={() => setActiveTab(item)}
+                className={`whitespace-nowrap px-4 py-1.5 rounded-full transition-all ${
+                  activeTab === item 
                     ? 'bg-[#2D2B2A] text-white font-semibold' 
                     : 'text-[#524B45] hover:text-[#2D2B2A] hover:bg-[#E2DAD0]'
                 }`}
               >
-                {cat}
+                {item}
               </button>
             ))}
           </nav>
         </div>
       </header>
 
-      {/* --- HERO BANNER SECTION --- */}
-      <section className="bg-[#FAF4EC] border-b border-[#E8DFC2] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-          <div className="space-y-4">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#E8DFC2] text-[#5C4A23]">
-              <Sparkles className="w-3.5 h-3.5 mr-1" /> Home-baked in small batches
-            </span>
-            <h1 className="text-4xl sm:text-5xl font-serif tracking-tight text-[#2D2B2A] leading-tight">
-              Sweet treats worth the <span className="italic text-[#C85A54]">journey</span> — now delivered to your door.
-            </h1>
-            <p className="text-[#6B635B] text-base leading-relaxed max-w-lg">
-              Six Coach Confectionery bakes cookies, cakes, muffins and coconut treats the way your favourite tin of biscuits always looked — full, fresh, and a little bit extra. Order for collection or nationwide delivery.
-            </p>
-            <div className="pt-2 flex flex-wrap gap-3">
-              <button 
-                onClick={() => setSelectedCategory('Cakes')}
-                className="bg-[#D95B66] text-white px-6 py-3 rounded-full font-medium hover:bg-[#C24954] transition-all flex items-center shadow-sm"
-              >
-                Browse our treats <ArrowRight className="w-4 h-4 ml-2" />
-              </button>
-              <button 
-                onClick={handleWhatsAppOrder}
-                className="bg-transparent border border-[#2D2B2A] text-[#2D2B2A] px-6 py-3 rounded-full font-medium hover:bg-[#2D2B2A] hover:text-white transition-all"
-              >
-                Order on WhatsApp
-              </button>
-            </div>
-          </div>
-
-          <div className="relative flex justify-center items-center">
-            <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-xl border-4 border-white transform rotate-2">
-              <img 
-                src="/images/cake-8.jpeg" 
-                alt="Signature Cake"
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="absolute -bottom-4 -left-2 bg-white p-4 rounded-xl shadow-lg border border-[#EDE7DF] max-w-xs transform -rotate-3">
-              <p className="text-xs font-semibold text-[#2D2B2A]">Freshly Baked Daily</p>
-              <p className="text-xs text-[#7A726A]">Custom orders open for weddings, birthdays & special events.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* --- MAIN CATALOG CONTENT --- */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        
-        {/* Section Header & Filters */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-[#E2DAD0]">
-          <div>
-            <h2 className="text-3xl font-serif font-bold text-[#2D2B2A]">{selectedCategory}</h2>
-            <p className="text-sm text-[#7A726A] mt-1">
-              Showing 1–{filteredProducts.length} of {PRODUCTS.length} results
-            </p>
-          </div>
-
-          <div className="mt-4 sm:mt-0 flex items-center space-x-3">
-            <div className="flex items-center text-sm text-[#524B45]">
-              <Filter className="w-4 h-4 mr-1.5" /> Sort by:
-            </div>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="bg-white border border-[#DDD5CA] rounded-lg px-3 py-1.5 text-sm text-[#2D2B2A] focus:outline-none focus:ring-1 focus:ring-[#2D2B2A]"
-            >
-              <option value="latest">Sort by latest</option>
-              <option value="price-low">Price: Low to High</option>
-              <option value="price-high">Price: High to Low</option>
-              <option value="rating">Highest Rated</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Product Grid */}
-        {filteredProducts.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-[#DDD5CA]">
-            <p className="text-lg text-[#6B635B]">No treats found matching your selection.</p>
-            <button 
-              onClick={() => { setSelectedCategory('All Products'); setSearchQuery(''); }}
-              className="mt-4 text-sm font-semibold text-[#C85A54] hover:underline"
-            >
-              Clear filters and view all products
-            </button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
-              <div 
-                key={product.id} 
-                className="bg-white rounded-xl overflow-hidden border border-[#EAE3D9] hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
-                onClick={() => setSelectedProduct(product)}
-              >
-                {/* Product Image & Badge */}
-                <div className="relative aspect-square overflow-hidden bg-[#FAF6F0]">
-                  <img 
-                    src={product.image} 
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {product.badge && (
-                    <span className="absolute top-3 left-3 bg-[#2D2B2A] text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded">
-                      {product.badge}
-                    </span>
-                  )}
-                </div>
-
-                {/* Product Details */}
-                <div className="p-5 flex-1 flex flex-col justify-between text-center">
-                  <div>
-                    <h3 className="font-serif font-bold text-lg text-[#2D2B2A] group-hover:text-[#C85A54] transition-colors">
-                      {product.name}
-                    </h3>
-                    <p className="text-xs text-[#7A726A] mt-1 line-clamp-2">{product.description}</p>
-                  </div>
-
-                  <div className="mt-4 pt-3 border-t border-[#F2ECE4] flex items-center justify-between">
-                    <span className="text-sm text-[#6B635B]">
-                      From: <strong className="text-base text-[#2D2B2A]">R{product.price}.00</strong>
-                    </span>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedProduct(product);
-                      }}
-                      className="bg-[#FAF4EC] hover:bg-[#2D2B2A] hover:text-white text-[#2D2B2A] text-xs font-semibold px-4 py-2 rounded-full transition-colors border border-[#E2DAD0]"
-                    >
-                      View Options
-                    </button>
-                  </div>
-                </div>
+      {/* --- HERO BANNER SECTION (Shown when browsing products) --- */}
+      {activeTab === 'All Products' && (
+        <section className="bg-[#FAF4EC] border-b border-[#E8DFC2] py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+            <div className="space-y-4">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#E8DFC2] text-[#5C4A23]">
+                <Sparkles className="w-3.5 h-3.5 mr-1" /> Home-baked in small batches
+              </span>
+              <h1 className="text-4xl sm:text-5xl font-serif tracking-tight text-[#2D2B2A] leading-tight">
+                Sweet treats worth the <span className="italic text-[#C85A54]">journey</span> — now delivered to your door.
+              </h1>
+              <p className="text-[#6B635B] text-base leading-relaxed max-w-lg">
+                Six Coach Confectionery bakes cookies, cakes, muffins and coconut treats the way your favourite tin of biscuits always looked — full, fresh, and a little bit extra. Order for collection or nationwide delivery.
+              </p>
+              <div className="pt-2 flex flex-wrap gap-3">
+                <button 
+                  onClick={() => setActiveTab('All Products')}
+                  className="bg-[#D95B66] text-white px-6 py-3 rounded-full font-medium hover:bg-[#C24954] transition-all flex items-center shadow-sm"
+                >
+                  Browse our treats <ArrowRight className="w-4 h-4 ml-2" />
+                </button>
+                <button 
+                  onClick={handleWhatsAppOrder}
+                  className="bg-transparent border border-[#2D2B2A] text-[#2D2B2A] px-6 py-3 rounded-full font-medium hover:bg-[#2D2B2A] hover:text-white transition-all"
+                >
+                  Order on WhatsApp
+                </button>
               </div>
-            ))}
+            </div>
+
+            <div className="relative flex justify-center items-center">
+              <div className="w-72 h-72 sm:w-80 sm:h-80 rounded-2xl overflow-hidden shadow-xl border-4 border-white transform rotate-2">
+                <img 
+                  src="/images/cake-8.jpeg" 
+                  alt="Signature Cake"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-4 -left-2 bg-white p-4 rounded-xl shadow-lg border border-[#EDE7DF] max-w-xs transform -rotate-3">
+                <p className="text-xs font-semibold text-[#2D2B2A]">Freshly Baked Daily</p>
+                <p className="text-xs text-[#7A726A]">Freshly baked products made with love and care!</p>
+              </div>
+            </div>
           </div>
-        )}
-      </main>
+        </section>
+      )}
+
+      {/* --- MAIN PAGE CONTENT --- */}
+      {activeTab === 'All Products' ? (
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          
+          {/* Section Header & Filters */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-8 pb-4 border-b border-[#E2DAD0]">
+            <div>
+              <h2 className="text-3xl font-serif font-bold text-[#2D2B2A]">All Products</h2>
+              <p className="text-sm text-[#7A726A] mt-1">
+                Showing 1–{filteredProducts.length} of {PRODUCTS.length} results
+              </p>
+            </div>
+
+            <div className="mt-4 sm:mt-0 flex items-center space-x-3">
+              <div className="flex items-center text-sm text-[#524B45]">
+                <Filter className="w-4 h-4 mr-1.5" /> Sort by:
+              </div>
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="bg-white border border-[#DDD5CA] rounded-lg px-3 py-1.5 text-sm text-[#2D2B2A] focus:outline-none focus:ring-1 focus:ring-[#2D2B2A]"
+              >
+                <option value="latest">Sort by latest</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Highest Rated</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Product Grid */}
+          {filteredProducts.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-[#DDD5CA]">
+              <p className="text-lg text-[#6B635B]">No treats found matching your search.</p>
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="mt-4 text-sm font-semibold text-[#C85A54] hover:underline"
+              >
+                Clear search and view all products
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredProducts.map((product) => (
+                <div 
+                  key={product.id} 
+                  className="bg-white rounded-xl overflow-hidden border border-[#EAE3D9] hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer"
+                  onClick={() => setSelectedProduct(product)}
+                >
+                  {/* Product Image & Badge */}
+                  <div className="relative aspect-square overflow-hidden bg-[#FAF6F0]">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    {product.badge && (
+                      <span className="absolute top-3 left-3 bg-[#2D2B2A] text-white text-[10px] font-bold tracking-widest uppercase px-2.5 py-1 rounded">
+                        {product.badge}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Product Details */}
+                  <div className="p-5 flex-1 flex flex-col justify-between text-center">
+                    <div>
+                      <h3 className="font-serif font-bold text-lg text-[#2D2B2A] group-hover:text-[#C85A54] transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="text-xs text-[#7A726A] mt-1 line-clamp-2">{product.description}</p>
+                    </div>
+
+                    <div className="mt-4 pt-3 border-t border-[#F2ECE4] flex items-center justify-between">
+                      <span className="text-sm text-[#6B635B]">
+                        From: <strong className="text-base text-[#2D2B2A]">R{product.price}.00</strong>
+                      </span>
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProduct(product);
+                        }}
+                        className="bg-[#FAF4EC] hover:bg-[#2D2B2A] hover:text-white text-[#2D2B2A] text-xs font-semibold px-4 py-2 rounded-full transition-colors border border-[#E2DAD0]"
+                      >
+                        View Options
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </main>
+      ) : (
+        /* --- ABOUT US PAGE SECTION --- */
+        <main className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          
+          {/* Header */}
+          <div className="text-center max-w-2xl mx-auto space-y-3 mb-12">
+            <span className="text-xs font-bold tracking-widest uppercase text-[#C85A54]">Our Story & Purpose</span>
+            <h2 className="text-4xl font-serif font-bold text-[#2D2B2A]">About Six Coach Confectionery</h2>
+            <div className="w-16 h-1 bg-[#C85A54] mx-auto rounded-full"></div>
+          </div>
+
+          {/* Intro Story */}
+          <div className="bg-white rounded-2xl p-8 sm:p-10 border border-[#EDE7DF] shadow-xs space-y-6 text-[#524B45] leading-relaxed">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center border-b border-[#F0EAE1] pb-8">
+              <div className="md:col-span-1 flex justify-center">
+                <img 
+                  src="/images/logo.jpeg" 
+                  alt="Six Coach Confectionery Logo" 
+                  className="w-40 h-40 object-cover rounded-full shadow-md border-4 border-[#FAF4EC]"
+                />
+              </div>
+              <div className="md:col-span-2 space-y-3">
+                <h3 className="text-2xl font-serif font-bold text-[#2D2B2A]">Who Is Behind It</h3>
+                <p className="text-sm">
+                  <strong>Six Coach Confectionery</strong> is an independent artisanal bakery rooted in home-style craftsmanship. Founded by Letta Mthiunye. She started the business because she wanted to share the joy of homemade treats with her community. Dedicated to preserving authentic baking traditions, our team combines culinary precision with warm, personal hospitality.
+                </p>
+                <p className="text-sm">
+                  Every muffin, biscuit tin, and celebration cake is crafted in small batches using premium ingredients, ensuring that every bite feels genuinely homemade and crafted with love.
+                </p>
+              </div>
+            </div>
+
+            {/* Core Pillars */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4">
+              <div className="bg-[#FAF7F2] p-5 rounded-xl border border-[#EDE7DF] text-center space-y-2">
+                <Coffee className="w-8 h-8 text-[#C85A54] mx-auto" />
+                <h4 className="font-serif font-bold text-[#2D2B2A]">What We Do</h4>
+                <p className="text-xs text-[#7A726A]">
+                  We bake fresh cookies, muffins, banana loaves, marble cakes, and custom celebration cakes daily for personal treats and special events.
+                </p>
+              </div>
+
+              <div className="bg-[#FAF7F2] p-5 rounded-xl border border-[#EDE7DF] text-center space-y-2">
+                <Heart className="w-8 h-8 text-[#C85A54] mx-auto" />
+                <h4 className="font-serif font-bold text-[#2D2B2A]">Why We Exist</h4>
+                <p className="text-xs text-[#7A726A]">
+                  To bring back the comforting feeling of opening a full, fresh tin of biscuits—bringing people together through memorable flavors.
+                </p>
+              </div>
+
+              <div className="bg-[#FAF7F2] p-5 rounded-xl border border-[#EDE7DF] text-center space-y-2">
+                <Award className="w-8 h-8 text-[#C85A54] mx-auto" />
+                <h4 className="font-serif font-bold text-[#2D2B2A]">Our Promise</h4>
+                <p className="text-xs text-[#7A726A]">
+                  Uncompromised quality, zero artificial preservatives, small-batch attention, and seamless WhatsApp ordering delivered directly to you.
+                </p>
+              </div>
+            </div>
+
+            {/* Call to action inside About page */}
+            <div className="pt-6 text-center border-t border-[#F0EAE1]">
+              <h4 className="font-serif font-bold text-lg text-[#2D2B2A] mb-2">Ready to try our home-baked treats?</h4>
+              <button 
+                onClick={() => setActiveTab('All Products')}
+                className="bg-[#2D2B2A] hover:bg-[#403D3B] text-white px-8 py-3 rounded-full font-semibold text-sm transition-all shadow-sm"
+              >
+                Explore All Products
+              </button>
+            </div>
+          </div>
+        </main>
+      )}
 
       {/* --- CUSTOMIZATION / PRODUCT DETAILS MODAL --- */}
       {selectedProduct && (
@@ -486,7 +557,7 @@ export default function App() {
                     <label className="block text-xs font-bold text-[#2D2B2A] uppercase mb-1">Custom Cake Board Inscription (Optional)</label>
                     <input 
                       type="text" 
-                      placeholder='e.g. "Happy 30th Birthday Sarah!"'
+                      placeholder='e.g. "Happy Birthday!"'
                       value={inscription}
                       onChange={(e) => setInscription(e.target.value)}
                       className="w-full text-sm border border-[#DDD5CA] rounded-lg p-2 bg-white"
@@ -615,9 +686,8 @@ export default function App() {
           <div>
             <h4 className="text-xs font-bold text-white uppercase tracking-wider mb-3">Quick Links</h4>
             <ul className="space-y-2 text-xs">
-              <li><button onClick={() => setSelectedCategory('Cakes')} className="hover:text-white transition-colors">Custom Cakes</button></li>
-              <li><button onClick={() => setSelectedCategory('Corporate Orders')} className="hover:text-white transition-colors">Corporate Orders</button></li>
-              <li><button onClick={() => setSelectedCategory('Treats')} className="hover:text-white transition-colors">Baked Treats & Tins</button></li>
+              <li><button onClick={() => setActiveTab('All Products')} className="hover:text-white transition-colors">All Products</button></li>
+              <li><button onClick={() => setActiveTab('About Us')} className="hover:text-white transition-colors">About Us</button></li>
             </ul>
           </div>
           <div>
@@ -634,6 +704,3 @@ export default function App() {
     </div>
   );
 }
-
-
-
