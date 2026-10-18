@@ -77,7 +77,7 @@ const PRODUCTS = [
     badge: 'CUSTOM',
     rating: 4.8,
     reviews: 22,
-    image: 'https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-6.jpeg',
     description: 'Decadent Belgian chocolate drip and ganache filling.'
   },
   {
@@ -88,7 +88,7 @@ const PRODUCTS = [
     badge: null,
     rating: 4.6,
     reviews: 18,
-    image: 'https://images.unsplash.com/photo-1557925923-cd4648e211a0?auto=format&fit=crop&w=600&q=80',
+    image: '/images/cake-7.jpeg',
     description: 'Festive funfetti cake layers with white chocolate frosting.'
   },
   {
