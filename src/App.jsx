@@ -219,12 +219,16 @@ export default function App() {
           <div className="flex items-center justify-between h-20">
             
             {/* Logo */}
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => setSelectedCategory('All Products')}>
-              <div className="w-14 h-14 rounded-full border-2 border-[#2D2B2A] border-dashed flex flex-col items-center justify-center p-1 text-center bg-white">
-                <span className="text-[9px] font-bold tracking-widest uppercase text-[#2D2B2A] leading-none">SIX COACH</span>
-                <span className="text-[7px] tracking-tight text-[#6B635B] uppercase leading-none mt-0.5">CONFECTIONERY</span>
-              </div>
-            </div>
+            <div 
+  className="flex items-center space-x-3 cursor-pointer" 
+  onClick={() => setSelectedCategory('All Products')}
+>
+  <img 
+    src="/images/logo.jpeg" 
+    alt="Six Coach Confectionery Logo" 
+    className="h-14 w-14 object-contain rounded-full"
+  />
+</div>
 
             {/* Search Bar */}
             <div className="flex-1 max-w-md mx-6">
