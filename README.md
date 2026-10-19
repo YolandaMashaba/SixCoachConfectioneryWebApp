@@ -1,16 +1,45 @@
-# React + Vite
+#  Six Coach Confectionery Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A professional, responsive artisanal bakery storefront and catalog web application built for **Six Coach Confectionery**, featuring dynamic Firebase integration, product filtering, a custom cake options modal, and a seamless WhatsApp-driven ordering flow.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+##  Key Features
 
-## React Compiler
+* **Interactive Product Catalog**: Browse home-baked treats, biscuits, muffins, and celebration cakes with real-time search filtering and sorting (by price or rating).
+* **Customization Modal**: Tailor custom cakes with size options, sponge/filling flavor choices, and personalized cake board inscriptions.
+* **Direct WhatsApp Ordering**: Streamlined checkout workflow that pre-fills itemized product details, quantities, and custom options into a direct WhatsApp message.
+* **About Us Page**: Highlights the brand's heritage, founder Letta Mthimunye, location (Roodepoort, Gauteng, South Africa), core pillars, and quality promises.
+* **Firebase Backend Integration**: Powered by Cloud Firestore, Firebase Auth, and Firebase Storage via a robust service layer (`catalogueService.js`) for dynamic content management.
+* **Expanded Footer**: Includes newsletter subscription, baking and collection hours, order notice guidelines, and direct contact options.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+##  Tech Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* **Frontend**: React (Vite), JavaScript, Tailwind CSS
+* **Icons**: Lucide React
+* **Backend & Database**: Firebase (Cloud Firestore, Authentication, Firebase Storage)
+* **CI/CD**: GitHub Actions for automated building and testing
+
+---
+
+##  Project Structure
+
+```text
+SixCoachConfectioneryWebApp-1/
+├── .github/
+│   └── workflows/
+│       └── ci.yml             # GitHub Actions CI pipeline
+├── public/
+│   └── images/                # Product and logo asset images
+├── src/
+│   ├── services/
+│   │   └── catalogueService.js # Firebase service layer for products & about page
+│   ├── App.jsx                # Main application component & UI views
+│   ├── main.jsx               # React entry point
+│   └── firebase.js            # Firebase app initialization
+├── .env.example               # Environment variables template
+├── firestore.rules            # Firebase Firestore security rules
+├── package.json
+└── vite.config.js
