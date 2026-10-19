@@ -1,0 +1,39 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin = a user whose account has the custom claim { admin: true }
+    // (set with scripts/set-admin.js)
+    function isAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    function validProduct() {
+      let d = request.resource.data;
+      return d.name is string && d.name.size() > 0 && d.name.size() <= 100
+        && d.description is string && d.description.size() <= 500
+        && d.category is string && d.category.size() > 0
+        && d.price is number && d.price >= 0 && d.price <= 100000
+        && d.isAvailable is bool;
+    }
+
+    // Catalogue: anyone can read, only the admin can change
+    match /products/{productId} {
+      allow read: if true;
+      allow create, update: if isAdmin() && validProduct();
+      allow delete: if isAdmin();
+    }
+
+    // About Us / ethos content: anyone can read, only the admin can change
+    match /siteContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Everything else is locked
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
