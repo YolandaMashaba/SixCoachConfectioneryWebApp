@@ -16,6 +16,7 @@ import {
 const WHATSAPP_NUMBER = '27791901471';
 const PHONE_DISPLAY = '+27 79 190 1471';
 const CONTACT_EMAIL = 'zwanefistos88@gmail.com'; 
+const BUSINESS_LOCATION = 'Flora Centre, Florida North, South Africa';
 
 // Product catalogue (display only)
 const PRODUCTS = [
