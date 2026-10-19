@@ -53,7 +53,7 @@ const PRODUCTS = [
   },
   {
     id: 'c4',
-    name: 'Layered Celebration Cake',
+    name: 'Jam Tart',
     category: 'Cakes',
     price: 300,
     badge: 'BESTSELLER',
@@ -94,6 +94,17 @@ const PRODUCTS = [
     reviews: 18,
     image: '/images/cake-7.jpeg',
     description: 'Soft and delicate, yet satisfying.'
+  }, 
+   {
+    id: 'c8',
+    name: 'Red Cake',
+    category: 'Cakes',
+    price: 300,
+    badge: null,
+    rating: 4.6,
+    reviews: 18,
+    image: '/images/cake-9.jpeg',
+    description: 'Soft and delicate, yet oddly satisfying. Perfect for birthdays and special occasions.'
   }
 ];
 
