@@ -19,7 +19,10 @@ export default defineConfig([
     },
   },
  {
-  files: ['scripts/**/*.js'],
-  languageOptions: { globals: globals.node },
-},
+    // Node.js scripts (not part of the website bundle)
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
 ])
