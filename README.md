@@ -1,7 +1,6 @@
 # Six Coach Confectionery
 
 An artisanal online bakery catalogue built for **Six Coach Confectionery**, founded by Letta Mthimunye. The platform enables customers to explore fresh home-baked cookies, muffins, cakes, and custom confectionery treats, with direct ordering and enquiry routing via WhatsApp.
-Deployment link: sixcoachconfectionerywebapp.vercel.app
 ---
 
 ## Features
@@ -14,6 +13,8 @@ Deployment link: sixcoachconfectionerywebapp.vercel.app
 - **Admin & Firebase Cloud Infrastructure:** Firestore security rules and configuration ready for production deployment.
 
 ---
+
+Deployment link: sixcoachconfectionerywebapp.vercel.app
 
 ## Tech Stack
 
