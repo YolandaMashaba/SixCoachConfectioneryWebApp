@@ -8,6 +8,21 @@ Cart contents stay in page state until submitted and are cleared after a success
 
 Configure the Firebase web app values from `env.example` in the deployment environment for Firebase-backed catalogue and admin features. Deploy Firestore security rules with `firebase deploy --only firestore:rules` when updating database access.
 
+## In-store availability
+
+The website reads live availability from the separate Firebase project configured by `VITE_STOCK_FIREBASE_*`. Register a **Web app** in the inventory project (`sixcoachconfectionery-e9a5a`) and set its API key and app ID along with the project ID in the deployment environment.
+
+The Android app should maintain a `publicStock` collection with one document per website product. Use the website product ID (`c1`–`c7`) for `productId`, and include a numeric `quantityInStock`, including zero quantities:
+
+```json
+{
+  "productId": "c1",
+  "quantityInStock": 5
+}
+```
+
+Only copy the product ID and stock quantity into this feed; keep costs, ingredient records, and other internal inventory data in the existing private collections. Configure the inventory project's Firestore rules to allow unauthenticated reads only for `publicStock`, while restricting writes to the trusted Android/admin workflow. The website shows “In stock in store” when quantity is above zero, “Out of stock in store” at zero, and an unavailable message when the feed cannot be read or a product has no feed record.
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
