@@ -18,6 +18,52 @@ service cloud.firestore {
         && d.isAvailable is bool;
     }
 
+    function validOrderItem(item) {
+      return item is map
+        && item.keys().hasAll(['productId', 'product', 'option', 'unitPrice', 'quantity', 'lineTotal'])
+        && item.keys().hasOnly(['productId', 'product', 'option', 'unitPrice', 'quantity', 'lineTotal'])
+        && item.productId is string && item.productId.size() > 0 && item.productId.size() <= 100
+        && item.product is string && item.product.size() > 0 && item.product.size() <= 100
+        && item.option is string && item.option.size() > 0 && item.option.size() <= 100
+        && item.unitPrice is number && item.unitPrice >= 0 && item.unitPrice <= 100000
+        && item.quantity is int && item.quantity >= 1 && item.quantity <= 1000
+        && item.lineTotal is number && item.lineTotal == item.unitPrice * item.quantity;
+    }
+
+    function validOrderItems(items) {
+      return items is list && items.size() >= 1 && items.size() <= 10
+        && validOrderItem(items[0])
+        && (items.size() < 2 || validOrderItem(items[1]))
+        && (items.size() < 3 || validOrderItem(items[2]))
+        && (items.size() < 4 || validOrderItem(items[3]))
+        && (items.size() < 5 || validOrderItem(items[4]))
+        && (items.size() < 6 || validOrderItem(items[5]))
+        && (items.size() < 7 || validOrderItem(items[6]))
+        && (items.size() < 8 || validOrderItem(items[7]))
+        && (items.size() < 9 || validOrderItem(items[8]))
+        && (items.size() < 10 || validOrderItem(items[9]));
+    }
+
+    function validEnquiry() {
+      let d = request.resource.data;
+      return d.keys().hasAll(['type', 'name', 'contact', 'message', 'consent', 'createdAt'])
+        && d.keys().hasOnly(['type', 'name', 'contact', 'message', 'consent', 'createdAt', 'product', 'orderItems', 'preferredDate', 'preferredTime'])
+        && d.type in ['Order', 'Question']
+        && d.name is string && d.name.size() > 0 && d.name.size() <= 100
+        && d.contact is string && d.contact.size() > 0 && d.contact.size() <= 150
+        && d.message is string && d.message.size() > 0 && d.message.size() <= 1000
+        && d.consent == true
+        && d.createdAt == request.time
+        && (d.type == 'Order'
+          ? d.keys().hasAll(['orderItems', 'preferredDate', 'preferredTime'])
+            && !('product' in d)
+            && validOrderItems(d.orderItems)
+            && d.preferredDate is string && d.preferredDate.matches('^\\d{4}-\\d{2}-\\d{2}$')
+            && d.preferredTime is string && d.preferredTime.matches('^\\d{2}:\\d{2}$')
+          : !('orderItems' in d) && !('preferredDate' in d) && !('preferredTime' in d)
+            && (!('product' in d) || (d.product is string && d.product.size() <= 100)));
+    }
+
     // Catalogue: anyone can read, only the admin can change
     match /products/{productId} {
       allow read: if true;
@@ -29,6 +75,13 @@ service cloud.firestore {
     match /siteContent/{docId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    // Customers can submit enquiries; only admins can view or delete them.
+    match /enquiries/{enquiryId} {
+      allow create: if validEnquiry();
+      allow read, delete: if isAdmin();
+      allow update: if false;
     }
 
     // Everything else is locked
