@@ -11,11 +11,14 @@ import {
   Award,
   Coffee,
   Download,
+  ChevronLeft,
+  ChevronRight,
   ShoppingCart,
   Trash2,
   CheckCircle,
   LoaderCircle
 } from 'lucide-react';
+import { useStoreStock } from './services/useStoreStock';
 
 // Contact details 
 const WHATSAPP_NUMBER = '+27791901471';
@@ -93,7 +96,11 @@ const PRODUCTS = [
     id: 'c5',
     name: 'Marble Cake',
     category: 'Cakes',
-    price: 100,
+    priceOptions: [
+      { label: 'Each', price: 8 },
+      { label: 'Loaf', price: 100 },
+      
+    ],
     badge: null,
     rating: 4.9,
     reviews: 31,
@@ -104,7 +111,12 @@ const PRODUCTS = [
     id: 'c6',
     name: 'Ginger Biscuits',
     category: 'Cakes',
-    price: 250,
+    priceOptions: [
+      { label: 'Each', price: 8 },
+      { label: '5lt', price: 250 },
+      { label: '10lt', price: 500 },
+      { label: '20lt', price: 1000 }
+    ],
     badge: 'CUSTOM',
     rating: 4.8,
     reviews: 22,
@@ -115,7 +127,12 @@ const PRODUCTS = [
     id: 'c7',
     name: 'Sponge Cake',
     category: 'Cakes',
-    price: 300,
+    priceOptions: [
+      { label: 'Each', price: 8 },
+      { label: '5lt', price: 320 },
+      { label: '10lt', price: 650 },
+      { label: '20lt', price: 995 }
+    ],
     badge: null,
     rating: 4.6,
     reviews: 18,
@@ -125,6 +142,21 @@ const PRODUCTS = [
 ];
 
 const NAV_ITEMS = ['All Products', 'About Us'];
+
+const ABOUT_CAROUSEL_IMAGES = [
+  {
+    src: '/images/carousel-1.jpeg',
+    alt: 'A customer meeting with a Six Coach Confectionery team member'
+  },
+  {
+    src: '/images/carousel-2.jpeg',
+    alt: 'A customer at the bakery counter and display case'
+  },
+  {
+    src: '/images/carousel-3.jpeg',
+    alt: 'A customer browsing baked treats at the bakery'
+  }
+];
 
 // Opens a WhatsApp chat. Pass a message to pre-fill it.
 const openWhatsApp = (message = '') => {
@@ -141,6 +173,12 @@ const getProductOptions = (product) =>
 const getProductStartingPrice = (product) =>
   Math.min(...getProductOptions(product).map((option) => option.price));
 
+const getStockStatusLabel = (productId, stockByProductId, loading) => {
+  if (loading) return 'Checking in-store availability...';
+  if (typeof stockByProductId[productId] !== 'boolean') return 'In-store availability unavailable';
+  return stockByProductId[productId] ? 'In stock in store' : 'Out of stock in store';
+};
+
 const getTodayDate = () => {
   const today = new Date();
   today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
@@ -148,7 +186,9 @@ const getTodayDate = () => {
 };
 
 export default function App() {
+  const { stockByProductId, loading: stockLoading, error: stockError } = useStoreStock();
   const [activeTab, setActiveTab] = useState('All Products');
+  const [aboutSlide, setAboutSlide] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('latest');
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -314,13 +354,6 @@ export default function App() {
               >
                 <MessageCircle className="w-5 h-5" />
               </a>
-              <a href="#instagram" aria-label="Instagram" className="text-[#2D2B2A] hover:text-[#E1306C] transition-colors">
-                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                  <rect x="3" y="3" width="18" height="18" rx="5" />
-                  <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.8" fill="currentColor" />
-                </svg>
-              </a>
               <a
                 href={`tel:${PHONE_DISPLAY.replace(/\s/g, '')}`}
                 aria-label="Call us"
@@ -453,6 +486,12 @@ export default function App() {
             </div>
           </div>
 
+          {stockError && (
+            <p role="status" className="mb-6 text-center text-sm text-[#7A726A]">
+              Store stock availability is currently unavailable. Please contact us to confirm.
+            </p>
+          )}
+
           {/* Product Grid */}
           {filteredProducts.length === 0 ? (
             <div className="text-center py-16 bg-white rounded-2xl border border-dashed border-[#DDD5CA]">
@@ -493,6 +532,9 @@ export default function App() {
                         {product.name}
                       </h3>
                       <p className="text-xs text-[#7A726A] mt-1 line-clamp-2">{product.description}</p>
+                      <p className="mt-2 text-xs font-semibold text-[#6B635B]" aria-live="polite">
+                        {getStockStatusLabel(product.id, stockByProductId, stockLoading)}
+                      </p>
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-[#F2ECE4] flex items-center justify-between">
@@ -541,6 +583,59 @@ export default function App() {
             <h2 className="text-4xl font-serif font-bold text-[#2D2B2A]">About Six Coach Confectionery</h2>
             <div className="w-16 h-1 bg-[#C85A54] mx-auto rounded-full"></div>
           </div>
+
+          <section
+            className="relative mb-12 overflow-hidden rounded-2xl border border-[#EDE7DF] bg-[#FAF6F0] shadow-lg"
+            role="region"
+            aria-label="Bakery photo carousel"
+            aria-roledescription="carousel"
+          >
+            <div
+              className="relative h-[280px] sm:h-[420px] lg:h-[520px]"
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${aboutSlide + 1} of ${ABOUT_CAROUSEL_IMAGES.length}`}
+              aria-live="polite"
+            >
+              <img
+                src={ABOUT_CAROUSEL_IMAGES[aboutSlide].src}
+                alt={ABOUT_CAROUSEL_IMAGES[aboutSlide].alt}
+                className="h-full w-full object-cover"
+              />
+              <button
+                type="button"
+                onClick={() => setAboutSlide((slide) => (
+                  slide === 0 ? ABOUT_CAROUSEL_IMAGES.length - 1 : slide - 1
+                ))}
+                aria-label="Show previous photo"
+                className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 text-[#2D2B2A] shadow-md transition hover:bg-white"
+              >
+                <ChevronLeft className="h-6 w-6" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setAboutSlide((slide) => (slide + 1) % ABOUT_CAROUSEL_IMAGES.length)}
+                aria-label="Show next photo"
+                className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 p-3 text-[#2D2B2A] shadow-md transition hover:bg-white"
+              >
+                <ChevronRight className="h-6 w-6" />
+              </button>
+              <div className="absolute inset-x-0 bottom-0 flex justify-center gap-2 bg-gradient-to-t from-black/50 to-transparent px-4 pb-4 pt-10">
+                {ABOUT_CAROUSEL_IMAGES.map((image, index) => (
+                  <button
+                    key={image.src}
+                    type="button"
+                    onClick={() => setAboutSlide(index)}
+                    aria-label={`Show photo ${index + 1}`}
+                    aria-current={aboutSlide === index ? 'true' : undefined}
+                    className={`h-2.5 rounded-full transition-all ${
+                      aboutSlide === index ? 'w-8 bg-white' : 'w-2.5 bg-white/70 hover:bg-white'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
 
           {/* Intro Story */}
           <div className="bg-white rounded-2xl p-8 sm:p-10 border border-[#EDE7DF] shadow-xs space-y-6 text-[#524B45] leading-relaxed">
@@ -860,6 +955,9 @@ export default function App() {
                 <span className="text-xs text-[#C85A54] font-semibold tracking-wider uppercase">{selectedProduct.category}</span>
                 <h3 className="text-2xl font-serif font-bold text-[#2D2B2A]">{selectedProduct.name}</h3>
                 <p className="text-sm text-[#6B635B] mt-1">{selectedProduct.description}</p>
+                <p className="mt-2 text-sm font-semibold text-[#6B635B]" aria-live="polite">
+                  {getStockStatusLabel(selectedProduct.id, stockByProductId, stockLoading)}
+                </p>
               </div>
 
               <div className="pt-4 flex items-center justify-between border-t border-[#F0EAE1]">
